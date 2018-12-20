@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
@@ -22,7 +23,7 @@ public class TestShardingJdbcApplicationTests {
 	}
 
 	@Test
-	public void testJdbc() throws SQLException {
+	public void testInsert() throws SQLException {
 		Connection connection = dataSource.getConnection();
 		String sql = "INSERT INTO `t_order` (`order_id`, `user_id`, `product`, `total_price`)\n" +
 				"VALUES\n" +
@@ -38,6 +39,18 @@ public class TestShardingJdbcApplicationTests {
 		connection.close();
 		assert(result > 0);
 
+	}
+
+	@Test
+	public void testQuery() throws SQLException {
+		Connection connection = dataSource.getConnection();
+		String sql = "select * from t_order where user_id=?";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setInt(1, 2);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			System.out.println("order: " + resultSet.getInt("order_id"));
+		}
 
 	}
 
