@@ -29,15 +29,16 @@ public class TestShardingJdbcApplicationTests {
 				"VALUES\n" +
 				"\t(?, ?, ?, ?)";
 		PreparedStatement preparedStatement = connection.prepareStatement(sql);
-		preparedStatement.setInt(1, 2);
-		preparedStatement.setInt(2, 2 );
+		preparedStatement.setInt(1, 1);
+		preparedStatement.setInt(2, 3 );
 		preparedStatement.setString(3, "iphoneX");
-		preparedStatement.setInt(4, 8000);
+		preparedStatement.setInt(4, 10000);
 		int result = preparedStatement.executeUpdate();
+		assert(result > 0);
 		connection.commit();
 		preparedStatement.close();
 		connection.close();
-		assert(result > 0);
+
 
 	}
 
@@ -51,6 +52,9 @@ public class TestShardingJdbcApplicationTests {
 		while (resultSet.next()) {
 			System.out.println("order: " + resultSet.getInt("order_id"));
 		}
+		resultSet.close();
+		preparedStatement.close();
+		connection.close();
 
 	}
 
