@@ -1,0 +1,47 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+allprojects {
+
+        ext {
+                profile = project.hasProperty("profile")? project["profile"] : "dev"
+                println("build with profile: " + profile)
+        }
+
+        sourceSets {
+                main{
+                        resources {
+                                srcDir("src/main/resources")
+                                srcDir("src/main/resources_${profile}")
+                        }
+                }
+        }
+
+        configurations {
+                all*.exclude(group: "ch.qos.logback", module: "logback-classic")
+                all*.exclude(group: "org.slf4j", module: "log4j-over-slf4j")
+                all*.exclude group: "ch.qos.logback"
+                all*.exclude group: "log4j"
+                all*.exclude module: 'slf4j-log4j12'
+                all*.exclude group: "org.eclipse.jetty.websocket"
+                all*.exclude module: "spring-boot-starter-logging"
+                all*.exclude module: "spring-boot-starter-tomcat"
+                all*.exclude group: "org.apache.tomcat"
+        }
+
+        // gradle DSL, ant, groovy
+
+        processResources {
+                from(sourceSets.main.resources.srcDirs) {
+                        exclude("**/static/**")
+                        exclude("**/templates/**")
+                        filter ReplaceTokens, tokens: [
+                                "name": project.name,
+                                "group": project.group,
+                                "version": project.version,
+                                "env": profile,
+                        ]
+                }
+        }
+        compileJava.dependsOn(processResources)
+
+
+}

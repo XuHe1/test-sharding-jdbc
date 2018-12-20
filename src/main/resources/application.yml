@@ -1,0 +1,31 @@
+dataSource1:
+  driverClassName: com.mysql.jdbc.Driver
+  jdbcUrl: jdbc:mysql://localhost:3306/kyx_order0?useUnicode=true&characterEncoding=UTF-8
+  username: root
+  password: 123456
+  poolName: springHikariCP
+  autoCommit: false
+  minimumIdle: 20
+  maximumPoolSize: 20
+  connectionInitSql: SELECT 1
+  dataSourceProperty:
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useServerPrepStmts: true
+
+dataSource2:
+  driverClassName: com.mysql.jdbc.Driver
+  jdbcUrl: jdbc:mysql://localhost:3306/kyx_order1?useUnicode=true&characterEncoding=UTF-8
+  username: root
+  password: 123456
+  poolName: springHikariCP
+  autoCommit: false
+  minimumIdle: 20
+  maximumPoolSize: 20
+  connectionInitSql: SELECT 1
+  dataSourceProperty:
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useServerPrepStmts: true
